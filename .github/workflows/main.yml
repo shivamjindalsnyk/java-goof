@@ -1,0 +1,20 @@
+name: Snyk Container
+on: push
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: todolist-goof
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build a Docker image
+      run: docker build -t java-goof .
+      
+    - name: Run Snyk to check Docker image for vulnerabilities
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: java-goof
