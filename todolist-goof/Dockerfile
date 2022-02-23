@@ -1,5 +1,7 @@
 FROM maven:3-jdk-8-slim as build
 
+RUN apt-get update && apt-get -y install ca-certificates apt-transport-https 
+
 RUN mkdir /usr/src/goof
 WORKDIR /usr/src/goof
 
