@@ -9,12 +9,21 @@ jobs:
         working-directory: todolist-goof
     steps:
     - uses: actions/checkout@v2
-    - name: Build a Docker image
-      run: docker build -t java-goof .
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    
+    - name: Build
+      uses: docker/build-push-action@v2
+      with:
+        load: true
+        context: todolist-goof
+        push: false
+        tags: java-goof:latest
       
-    - name: Run Snyk to check Docker image for vulnerabilities
+    - name: Run Snyk Container
       uses: snyk/actions/docker@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: java-goof
+        image: java-goof:latest
